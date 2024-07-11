@@ -26,7 +26,8 @@ STS.jar 파일 압축풀기
 -- Web > HTML Files 에서 인코딩 ISO 10646/Unicode(UTF-8) 선택
 -- (*이건 안해도 됨) Web > JSP Files 에서 인코딩 ISO 10646/Unicode(UTF-8) 선택
 
-v v v New Project 시, github 클론은 여기까지 v v v
+^ ^ ^ github 클론은 여기까지 ^ ^ ^
+v v v New Project 시 v v v
 
 (3) 프로젝트 만들기
 - 건드려야 할 것
@@ -63,6 +64,22 @@ v v v v 여기까지 완료시  v v v v
 (2) 원격저장소 만들기 > github 홈페이지에서 생성 > "orgin", SSH 주소 넣어주기
 (3) 연결되면 push
 (3-2) 초기에는 develop, master 모두. 이후로는 develop만 사용.
+
+^ ^ ^ github 클론은 여기까지 ^ ^ ^
+v v v New Project 시 v v v
+
+
+3. 기타 설정해야 할 것들
+(1) 추가해야할 라이브러리
+implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+-- Thymeleaf layout 기능을 사용할 수 있게 됨
+
+(2) html, xml 템플릿 추가
+
+(3) 부트스트랩 추가 후 jQuery를 uncompressed로 교체
+
+
+
 
 
 

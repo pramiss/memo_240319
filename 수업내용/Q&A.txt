@@ -1,0 +1,3 @@
+Q&A
+1. 왜 일부 select는 api가 아닌지?
+2. 왜 user/sign-in-view 주소로 들어가면 나머지 프레임들도 보이는지?
