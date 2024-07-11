@@ -1,0 +1,80 @@
+[프로젝트 환경세팅]
+파일 구조: memo(project) - MEMO_STS, memo_workspace, (clone)
+프로젝트 구조:
+Project
+ㄴ main - com.memo : 아래에 모든 자바 백엔드 코드가 들어감
+ㄴ resources - mappers : MyBatis와 연결될 *Mapper.xml들
+                 - templates : html 파일
+                 - static : css, img, js 등 그 외 전부
+                 - application.yml : 여러가지 설정들
+ㄴ build.gradle : 여러가지 라이브러리 추가
+
+
+1. STS 다운로드
+STS.jar 파일 압축풀기
+(1) 커피모양 - 더블클릭
+(2) 반디집 - 두번 압축 풀어야함
+
+2. STS 환경세팅
+(1) STS 플러그인 설치
+-- Eclipse Market > Java and Web ... jsp 설치
+
+(2) 글자 인코딩 설정
+- Window > Preferences 설정창을 띄운다.
+-- General > Workspace > Text file encoding을 Other 선택 > UTF-8로 변경
+-- Web > CSS Files 에서 인코딩 ISO 10646/Unicode(UTF-8) 선택
+-- Web > HTML Files 에서 인코딩 ISO 10646/Unicode(UTF-8) 선택
+-- (*이건 안해도 됨) Web > JSP Files 에서 인코딩 ISO 10646/Unicode(UTF-8) 선택
+
+v v v New Project 시, github 클론은 여기까지 v v v
+
+(3) 프로젝트 만들기
+- 건드려야 할 것
+-- Name : project_name(대소문자 상관X)
+-- Type : Gradle
+-- Group : com.projectName
+-- Package : com.projectName
+- 라이브러리 Dependency(8) 추가
+-- Developer Tools : Spring Boot DevTools, Lombok, Spring Configuration Processor
+-- SQL : Spring Data JPA, MyBatis Framework,
+
+(4) 기본 동작 확인
+- 두가지 에러방지 추가(--debug, MyBatis 어노테이션)
+>> MyBatis 어노테이션은 DB 연결 후 삭제하기
+
+- application.yml 설정 (application properties는 삭제)
+-- 포트번호 변경 (필요하면)
+-- 타임리프 캐싱 끄기 
+-- Spring * DB 연결
+-- MyBatis * Mapper 연결
+
+-- 서버 켜서 테스트
+<테스트 할 것>
+-- @RestController return String "문장" => HTML
+-- @RestController return Map => JSON
+-- @Controller return String "html주소" => HTML 화면 확인 (<html>에 Thymeleaf 확인)
+-- DB 연동(MyBatis) + p6spy 추가 (Mapper의 MyBatis DTD 확인)
+
+v v v v 여기까지 완료시  v v v v 
+- 형상관리(github)
+1. 원본 생성시
+(1) 소스트리 > Create > 경로와 이름 잡기(경로는 workspace > .metadata 없는 지점, 이름은 마음대로)
+(1-2) 로컬로 commit 후 Branch로 나눠주기. 이름은 develop 으로.
+(2) 원격저장소 만들기 > github 홈페이지에서 생성 > "orgin", SSH 주소 넣어주기
+(3) 연결되면 push
+(3-2) 초기에는 develop, master 모두. 이후로는 develop만 사용.
+
+
+
+메모: com.memo  post: MyBatis, user: JPA
+SNS: com.sns      user/post: JPA, comment/like: MyBatis
+
+
+<프로젝트 생성 오류 시 삭제 하는법>
+우클릭 > delete > 체크박스 체크 후 OK
+- 다시 생성해도 오류가 나면 Dependency 쪽에서 문제
+- 그래도 안되면 jdk 버전 맞춰서 다시
+(JDK 설치: 구글 검색 후 공식 사이트에서 windows x64 installer > exe 파일 다운로드 후 설치
+설치한 자바 위치: C > Program Files > Java > jdk-17 폴더 내부로 이동 및 주소 복사
+환경변수 설정: 시스템 속성 고급 > 환경 변수 > 시스템 변수 > JAVA_HOME에 jdk-17 경로 복사 후 확인
+-- 환경변수는 이미 설정되어 있다고 가정하고 변경만 한 것)

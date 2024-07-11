@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/defaultLayout}">
+
+<!-- defaultLayout의 content 부분에 들어가게 됨 -->
+<section layout:fragment="content" class="contents">
+	<div class="x-center py-5">
+		<form method="post" action="#">
+			<div class="sign-up-box">
+				<h1 class="mb-5">회원가입</h1>
+				<table class="table table-bordered">
+					<tr>
+						<td><span>* 아이디 (4자 이상)</span></td>
+						<td>
+							<div class="d-flex">
+								<input type="text" name="id" class="form-control col-9"
+									placeholder="아이디를 입력하세요.">
+								<button type="button" id="checkDupBtn" class="btn btn-success">중복확인</button>
+							</div>
+						</td>
+					</tr>
+	
+					<tr>
+						<td><span>* 비밀번호</span></td>
+						<td><input type="password" name="password"
+							class="form-control" placeholder="비밀번호를 입력하세요."></td>
+					</tr>
+	
+					<tr>
+						<td><span>* 비밀번호 확인</span></td>
+						<td><input type="password" name="passwordCheck"
+							class="form-control" placeholder="비밀번호를 입력하세요."></td>
+					</tr>
+	
+					<tr>
+						<td><span>* 이름</span></td>
+						<td><input type="text" name="name" class="form-control"
+							placeholder="이름을 입력하세요."></td>
+					</tr>
+	
+					<tr>
+						<td><span>* 이메일</span></td>
+						<td><input type="text" name="email" class="form-control"
+							placeholder="이메일 주소를 입력하세요."></td>
+					</tr>
+				</table>
+				<div class="d-flex justify-content-end my-5">
+					<button type="submit" class="btn btn-primary col-3 btn-type-a">회원가입</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</section>
+
+<!-- defaultLayout의 script 부분에 들어감 -->
+<th:block layout:fragment="script">
+	<script>
+		$(document).ready(function() {
+			$('#checkDupBtn').on('click', function() {
+				console.log("checkDupBtn");
+			}) //-- 아이디 중복확인 버튼
+		}); //-- ready
+	</script>
+</th:block>
+
+</html>
