@@ -10,6 +10,10 @@ Project
 ㄴ build.gradle : 여러가지 라이브러리 추가
 
 
+------------------------[새 프로젝트 생성]------------------------
+0. 파일구조 만들기
+project - project_STS, project_workspace
+
 1. STS 다운로드
 STS.jar 파일 압축풀기
 (1) 커피모양 - 더블클릭
@@ -26,10 +30,8 @@ STS.jar 파일 압축풀기
 -- Web > HTML Files 에서 인코딩 ISO 10646/Unicode(UTF-8) 선택
 -- (*이건 안해도 됨) Web > JSP Files 에서 인코딩 ISO 10646/Unicode(UTF-8) 선택
 
-^ ^ ^ github 클론은 여기까지 ^ ^ ^
-v v v New Project 시 v v v
 
-(3) 프로젝트 만들기
+3. 프로젝트 만들기
 - 건드려야 할 것
 -- Name : project_name(대소문자 상관X)
 -- Type : Gradle
@@ -39,48 +41,75 @@ v v v New Project 시 v v v
 -- Developer Tools : Spring Boot DevTools, Lombok, Spring Configuration Processor
 -- SQL : Spring Data JPA, MyBatis Framework,
 
-(4) 기본 동작 확인
-- 두가지 에러방지 추가(--debug, MyBatis 어노테이션)
+
+4. 추가 설정들
+(1) 두가지 에러방지 추가(--debug, MyBatis 어노테이션)
 >> MyBatis 어노테이션은 DB 연결 후 삭제하기
 
-- application.yml 설정 (application properties는 삭제)
+(2) application.yml 설정 (application properties는 삭제)
 -- 포트번호 변경 (필요하면)
 -- 타임리프 캐싱 끄기 
 -- Spring * DB 연결
 -- MyBatis * Mapper 연결
 
--- 서버 켜서 테스트
-<테스트 할 것>
--- @RestController return String "문장" => HTML
--- @RestController return Map => JSON
--- @Controller return String "html주소" => HTML 화면 확인 (<html>에 Thymeleaf 확인)
--- DB 연동(MyBatis) + p6spy 추가 (Mapper의 MyBatis DTD 확인)
+(3) 라이브러리 추가
+implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+>> 타임리프 layout 라이브러리
+implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+>> p6spy 라이브러리
+
+(4) 부트스트랩 추가 후 jQuery를 uncompressed로 교체
+
+(5) html, xml 템플릿 추가
+
+
+5. 서버 켜서 테스트
+(1) @RestController return String "문장" => HTML
+(2) @RestController return Map => JSON
+(3) @Controller return String "html주소" => HTML 화면 및 타임리프 작동 확인
+(4) DB 연동(MyBatis) => MyBatis 연결, p6spy, DTD 확인
 
 v v v v 여기까지 완료시  v v v v 
-- 형상관리(github)
+6. 형상관리(github)
 1. 원본 생성시
 (1) 소스트리 > Create > 경로와 이름 잡기(경로는 workspace > .metadata 없는 지점, 이름은 마음대로)
 (1-2) 로컬로 commit 후 Branch로 나눠주기. 이름은 develop 으로.
 (2) 원격저장소 만들기 > github 홈페이지에서 생성 > "orgin", SSH 주소 넣어주기
 (3) 연결되면 push
 (3-2) 초기에는 develop, master 모두. 이후로는 develop만 사용.
+---------------------------------------------------------------------
 
-^ ^ ^ github 클론은 여기까지 ^ ^ ^
-v v v New Project 시 v v v
-
-
-3. 기타 설정해야 할 것들
-(1) 추가해야할 라이브러리
-implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
--- Thymeleaf layout 기능을 사용할 수 있게 됨
-
-(2) html, xml 템플릿 추가
-
-(3) 부트스트랩 추가 후 jQuery를 uncompressed로 교체
+-------------------------[프로젝트 Clone]-------------------------
+0.
+(1) 파일구조 만들기
+project - project_STS, project_workspace
+(2) Github에서 프로젝트 Clone
 
 
+1. STS 다운로드
+STS.jar 파일 압축풀기
+(1) 커피모양 - 더블클릭
+(2) 반디집 - 두번 압축 풀어야함
 
 
+2. STS 환경세팅
+(1) STS 플러그인 설치
+-- Eclipse Market > Java and Web ... jsp 설치
+
+(2) 글자 인코딩 설정
+- Window > Preferences 설정창을 띄운다.
+-- General > Workspace > Text file encoding을 Other 선택 > UTF-8로 변경
+-- Web > CSS Files 에서 인코딩 ISO 10646/Unicode(UTF-8) 선택
+-- Web > HTML Files 에서 인코딩 ISO 10646/Unicode(UTF-8) 선택
+-- (*이건 안해도 됨) Web > JSP Files 에서 인코딩 ISO 10646/Unicode(UTF-8) 선택
+
+
+3. import 프로젝트
+Gradle로 임포트해야 인식됨
+
+4. 추가 설정들
+(5) html, xml 템플릿 추가
+---------------------------------------------------------------------
 
 
 메모: com.memo  post: MyBatis, user: JPA
