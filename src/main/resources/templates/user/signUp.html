@@ -6,45 +6,44 @@
 <!-- defaultLayout의 content 부분에 들어가게 됨 -->
 <section layout:fragment="content" class="contents">
 	<div class="x-center py-5">
-		<form method="post" action="#">
+		<form id="signUpForm" method="post" action="/user/sign-up">
 			<div class="sign-up-box">
 				<h1 class="mb-5">회원가입</h1>
+				
 				<table class="table table-bordered">
 					<tr>
 						<td><span>* 아이디 (4자 이상)</span></td>
 						<td>
 							<div class="d-flex">
-								<input type="text" name="id" class="form-control col-9"
-									placeholder="아이디를 입력하세요.">
+								<input type="text" name="loginId" id="loginId" class="form-control col-9" placeholder="아이디를 입력하세요.">
 								<button type="button" id="checkDupBtn" class="btn btn-success">중복확인</button>
+							</div>
+							<div class="pl-1">
+								<small id="idCheckLength" class="text-danger d-none">4글자 이상 입력하세요.</small>
+								<small id="idCheckDuplicated" class="text-danger d-none">이미 사용중인 아이디입니다.</small>
+								<small id="idCheckOk" class="text-success d-none">사용 가능한 아이디입니다.</small>
+								<small id="idCheckNeed" class="text-warning d-none">중복확인을 해주세요.</small>
 							</div>
 						</td>
 					</tr>
-	
 					<tr>
 						<td><span>* 비밀번호</span></td>
-						<td><input type="password" name="password"
-							class="form-control" placeholder="비밀번호를 입력하세요."></td>
+						<td><input type="password" name="password" id="password" class="form-control" placeholder="비밀번호를 입력하세요."></td>
 					</tr>
-	
 					<tr>
 						<td><span>* 비밀번호 확인</span></td>
-						<td><input type="password" name="passwordCheck"
-							class="form-control" placeholder="비밀번호를 입력하세요."></td>
+						<td><input type="password" name="confirmPassword" id="confirmPassword" class="form-control" placeholder="비밀번호를 입력하세요."></td>
 					</tr>
-	
 					<tr>
 						<td><span>* 이름</span></td>
-						<td><input type="text" name="name" class="form-control"
-							placeholder="이름을 입력하세요."></td>
+						<td><input type="text" name="name" id="name" class="form-control" placeholder="이름을 입력하세요."></td>
 					</tr>
-	
 					<tr>
 						<td><span>* 이메일</span></td>
-						<td><input type="text" name="email" class="form-control"
-							placeholder="이메일 주소를 입력하세요."></td>
+						<td><input type="text" name="email" id="email" class="form-control" placeholder="이메일 주소를 입력하세요."></td>
 					</tr>
 				</table>
+				
 				<div class="d-flex justify-content-end my-5">
 					<button type="submit" class="btn btn-primary col-3 btn-type-a">회원가입</button>
 				</div>
@@ -57,9 +56,126 @@
 <th:block layout:fragment="script">
 	<script>
 		$(document).ready(function() {
+			
+			// 아이디 input시
+			$("#loginId").on('input', function() {
+				// 0. 문구 초기화
+				$("#idCheckLength").addClass("d-none");
+				$("#idCheckDuplicated").addClass("d-none");
+				$("#idCheckOk").addClass("d-none");
+				$("#idCheckNeed").addClass("d-none");
+				
+				$("#idCheckNeed").removeClass("d-none");
+			}); //-- 아이디 input
+			
+			
+			// 아이디 중복확인
 			$('#checkDupBtn').on('click', function() {
-				console.log("checkDupBtn");
+				// 0. 문구 초기화
+				$("#idCheckLength").addClass("d-none");
+				$("#idCheckDuplicated").addClass("d-none");
+				$("#idCheckOk").addClass("d-none");
+				$("#idCheckNeed").addClass("d-none");
+				
+				
+				// 1. 현재 아이디를 받아옴
+				let loginId = $("#loginId").val().trim();
+
+				// 글자 수 확인
+				if (loginId.length < 4) {
+					$("#idCheckLength").removeClass("d-none");
+					return;
+				}
+				
+				// 2. AJAX로 아이디를 넘겨서 dupli: T/F를 받아옴
+				$.ajax({
+					// request
+					url:"/user/is-duplicated-id"
+					, data:{"loginId":loginId}
+					
+					// response
+					, success:function(data) {
+						if (data.is_duplicated_id) { // 중복
+							$("#idCheckDuplicated").removeClass("d-none");
+						} else { // 사용가능
+							$("#idCheckOk").removeClass("d-none");
+						}
+					}
+					, error:function(error) {
+						alert("중복 확인에 실패했습니다.");
+					}
+					
+				}); //-- AJAX
 			}) //-- 아이디 중복확인 버튼
+			
+			// 회원가입 submit
+			$("#signUpForm").on('submit', function(e) {
+				e.preventDefault(); // submit 기능 중단
+				
+				// validation
+				let loginId = $("#loginId").val().trim();
+				let password = $("#password").val();
+				let confirmPassword = $("#confirmPassword").val();
+				let name = $("#name").val().trim();
+				let email = $("#email").val().trim();
+				
+				if (!loginId) {
+					alert("아이디를 입력하세요");
+					return false;
+				}
+				
+				if (!password || !confirmPassword) {
+					alert("비밀번호를 입력하세요");
+					return false;
+				}
+				
+				if (!name) {
+					alert("이름을 입력해주세요.")
+					return false;
+				}
+				
+				if (!email) {
+					alert("이메일을 입력해주세요.")
+					return false;
+				}
+				
+				if (password != confirmPassword) {
+					alert("비밀번호가 일치하지 않습니다.")
+					return false;
+				}
+				
+				// 아이디 중복확인 통과 했는지 확인
+				// #idCheckOk가 d-none이 없을때만 통과
+				if($("#idCheckOk").hasClass("d-none")) {
+					alert("아이디 중복확인을 해주세요.");
+					return false;
+				}
+				
+				// 서버 전송
+				// 1) submit 호출 -> response가 화면(HTML)
+				// $(this)[0].submit(); // form 태그가 submit -> 화면이동
+				
+				// 2) AJAX 호출 -> response가 JSON
+				let url = $(this).attr("action");
+				let params = $(this).serialize(); // form태그의 모든 name속성의 값을 가져옴 -> QueryString형태로 저장됨
+				// 꺼낼 때는 input의 name에 해당하는 이름으로 꺼내면 됨
+				
+				$.post(url, params) // request : $.post(이동주소, 파라미터)
+				.done(function(data) { // response : success와 동일
+					if (data.code == 200) {
+						alert("가입을 환영합니다. 다시 로그인 해주세요.");
+						location.href = "/user/sign-in-view"; // 로그인 화면이동
+					} else {
+						alert(data.error_message);
+					}
+				})
+				.fail(function(error) {
+					alert("ajax 에러");
+				}); // response : error와 동일  
+				
+				
+			}); //-- 회원가입 submit		
+			
 		}); //-- ready
 	</script>
 </th:block>
