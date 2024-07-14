@@ -1,5 +1,4 @@
-MEMO user-JPA post-MyBatis
-SNS user/post-JPA comment/like-MyBatis
+
 
 <JPA 사용전 해야할 것>
 마론달 Spring2 강의자료에서
@@ -13,3 +12,7 @@ SNS user/post-JPA comment/like-MyBatis
 ------------------------------------------------------------
 java / common 패키지 : 공통으로 사용하는 패키지
 common > EncryptUtils (해시 함수)
+
+
+MEMO user-JPA post-MyBatis
+SNS user/post-JPA comment/like-MyBatis
