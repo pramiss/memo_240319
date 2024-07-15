@@ -17,6 +17,11 @@ public class UserBO {
 		return userRepository.findByLoginId(loginId);
 	}
 	
+	// input: loginId&password, output: UserEntity/null
+	public UserEntity getUserEntityByLoginIdAndPassword(String loginId, String password) {
+		return userRepository.findByLoginIdAndPassword(loginId, password);
+	}
+	
 	// input: 4params, output: UserEntity/null
 	public UserEntity addUser(String loginId, String password, String name, String email) {
 		// JPA는 save-builder로 entity로 넘긴다.

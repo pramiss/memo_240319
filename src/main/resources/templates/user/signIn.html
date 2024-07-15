@@ -6,12 +6,12 @@
 <!-- defaultLayout의 content 부분에 들어가게 됨 -->
 <section layout:fragment="content" class="contents">
 	<div class="x-center py-5">
-		<form method="post" action="#">
+		<form method="post" action="/user/sign-in">
 			<div class="sign-in-box">
 				<h1 class="mb-5">로그인</h1>
-				<input type="text" name="id" class="form-control mb-2" placeholder="아이디를 입력하세요">
+				<input type="text" name="loginId" class="form-control mb-2" placeholder="아이디를 입력하세요">
 				<input type="password" name="password" class="form-control mb-4" placeholder="비밀번호를 입력하세요">
-				<button type="submit" class="btn btn-warning w-100 mb-2 btn-type-a">로그인</button>
+				<button type="submit" id="signInBtn" class="btn btn-warning w-100 mb-2 btn-type-a">로그인</button>
 				<button type="button" id="goToSignUpBtn" class="btn btn-primary w-100 btn-type-a">회원가입</button>
 			</div>
 		</form>
@@ -22,9 +22,46 @@
 <th:block layout:fragment="script">
 	<script>
 		$(document).ready(function(){
+			// 회원가입 화면으로 이동
 			$("#goToSignUpBtn").on('click', function() {
 				location.href = '/user/sign-up-view';
-			}) // 회원가입 화면으로 이동
+			}) //-- 회원가입 화면으로 이동
+			
+			// 로그인 동작 - form에 submit이 일어날때
+			$("form").on('submit', function(e) {
+				e.preventDefault(); // form 기능(submit) 중단
+				
+				let loginId = $("input[name=loginId]").val().trim();
+				let password = $("input[name=password]").val();
+				
+				// validation : 입력확인
+				if (!loginId) {
+					alert("아이디를 입력하세요.");
+					return false;
+				}
+				
+				if (!password) {
+					alert("비밀번호를 입력하세요.");
+					return false;
+				}
+				
+				let url = $(this).attr("action");
+				let params = $(this).serialize(); // name 속성 반드시 필요. name으로 key:value 쌍을 만듬
+				
+				// AJAX
+				$.post(url, params) // request
+				.done(function(data) { // response
+					if (data.result == "성공") {
+						// 글 목록 화면으로 이동
+						location.href = "/post/post-list-view";
+					} else {
+						alert(data.error_message);
+					}
+				})
+				.fail(function(error) {
+					
+				});
+			}) //-- 로그인
 			
 		}); //-- ready
 	</script>
