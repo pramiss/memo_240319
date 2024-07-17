@@ -15,7 +15,7 @@ public interface PostMapper {
 	// 글 목록
 	public List<Post> selectPostListByUserId(int userId);
 	// 글 추가
-	public Post insertPost(
+	public void insertPost(
 			@Param("userId") int userId,
 			@Param("subject") String subject,
 			@Param("content") String content,

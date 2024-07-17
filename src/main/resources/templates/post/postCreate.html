@@ -13,7 +13,7 @@
 		<textarea rows="10" id="content" class="form-control" placeholder="내용을 입력하세요."></textarea>
 		
 		<div class="d-flex justify-content-end my-3">
-			<input type="file" id="file">
+			<input type="file" id="file" accept=".jpg, .png, .gif">
 		</div>
 		
 		<div class="d-flex justify-content-between">
@@ -35,6 +35,74 @@
 			$('#postListBtn').on('click', function() {
 				location.href = "/post/post-list-view";
 			}); //-- 목록으로 이동
+			
+			// 모두 지우기
+			$("#clearBtn").on('click', function() {
+				$("#subject").val(""); // 제목 초기화
+				$("#content").val(""); // 내용 초기화
+			}) //-- 모두 지우기
+
+			// 글 쓰기 버튼
+			$('#saveBtn').on('click', function() {
+				let subject = $('#subject').val().trim();
+				let content = $('#content').val();
+				let fileName = $('#file').val(); // C:\fakepath\magic-dog.jpg => 임시경로를 이름으로 저장됨 (진짜 파일X)
+				
+				// validation
+				if (!subject) {
+					alert("제목을 입력하세요");
+					return;
+				}
+				if (!content) {
+					alert("내용을 입력하세요");
+					return;
+				}
+				
+				// 파일명이 비워져 있지 않으면 => 확장자 체크
+				if (fileName) {
+					// C:\fakepath\castle.jpg
+					let extension = fileName.split(".").pop().toLowerCase();
+					
+					if ($.inArray(extension, ["jpg", "gif", "png"]) == -1) {
+						alert("이미지 파일만 업로드 할 수 있습니다.");
+						$('#file').val(""); // 파일 비우기
+						return;
+					}					
+				}
+
+				// form태그를 js에서 만든다.
+				// 이미지 업로드 시 <form> 반드시 필요
+				let formData = new FormData();
+				formData.append("subject", subject); // key는 name 속성과 같고 Reqeust Param 명
+				formData.append("content", content);
+				formData.append("file", $('#file')[0].files[0]);
+				
+				// AJAX
+				$.ajax({
+					// request
+					type:"post" //-- file이 커서 get으로는 보내면 안됨
+					, url:"/post/create"
+					, data:formData //-- form을 통째로 넘김
+					, enctype:"multipart/form-data" //-- file 업로드 시 필수설정
+					, processData:false //-- file 업로드 시 필수설정
+					, contentType:false //-- file 업로드 시 필수설정
+					
+					// response
+					, success:function(data) {
+						if (data.code == 200) {
+							alert("저장되었습니다");
+							location.href = "/post/post-list-view"; // 화면이동
+						} else {
+							alert(data.error_message);
+						}
+					}
+					, error:function(error) {
+						alert("AJAX ERROR : 글 저장 실패");
+					}
+				});
+				
+			}) //-- 글쓰기
+			
 		}); //-- ready
 	</script>
 </th:block>
