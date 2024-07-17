@@ -1,0 +1,50 @@
+서버에 이미지 파일 저장
+
+1. View
+file 타입으로 데이터를 넘김
+
+2. RestController
+file 타입을 MultipartFile으로 받음
+그대로 BO로 넘겨줌
+
+3. BO(Service)
+FileManagerService 클래스를 이용함  
+1) MultipartFile을 서버에 실제로 저장
+2) 저장한 경로를 imagePath로 돌려줌
+-> 이때 실제 저장경로와 imagePath는 다름
+ex) 
+실제 경로: D:\\배진하\\6_spring_project\\memo\\memo_workspace\\images/aaaa_1702802640514/sun.png
+imagePath: http://localhost/images/aaaa_1721207982638/sun.png
+
+4. Mapper
+여기서부터는 그냥 url String으로 저장함
+DB에는 FileManagerService에서 리턴해준 url로 저장함
+
+5. FileManagerService 클래스
+기본 구조
+<field>
+FILE_UPLOAD_PATH = "D:\배진하\project\images"
+
+<method>
+uploadFile() : 이미지 파일을 저장하고 url로 돌려줌
+
+1) 파일 이름 생성
+directoryName = "user1_130121"
+
+2) 이미지 파일이 들어갈 최종 경로
+filePath = FILE_UPLOAD_PATH + "/" + directoryName + "/";
+//--> D:\배진하\project\images/user1_130121/
+
+3) 최종경로에 해당하는 디렉토리 생성
+images 폴더 밑에 user1_130121가 생김
+
+4) 파일 업로드
+Files.write(path, bytes);
+//--> MultipartFile을 bytes 타입의 데이터 배열로 변환에 filePath에 저장한다.
+
+5) 실제 경로와 DB 경로를 매핑
+위에서 봤듯이 실제 경로와 DB에 저장될 경로는 다르지만
+DB주소로 접속하면 해당 이미지가 떠야함.
+즉, 실제경로-DB경로가 매핑되야함
+
+6) DB 경로로 리턴
