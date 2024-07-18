@@ -26,6 +26,13 @@ public class PostBO {
 		return postMapper.selectPostListByUserId(userId);
 	}
 	
+	// 글상세
+	// input: userId, postId
+	// output: Post/null
+	public Post getPostByIdAndUserId(int userId, int postId) {
+		return postMapper.selectPostByIdAndUserId(userId, postId);
+	}
+	
 	// 글저장
 	// input: userId, subject, content, imagePath
 	// output: rowCount

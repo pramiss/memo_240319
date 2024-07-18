@@ -46,3 +46,9 @@ footer {
 .sign-up-box {
 	width: 780px;
 }
+
+/* 글목록 관련 */
+.post-list {
+	min-width: 800px;
+	width: 50%;
+}

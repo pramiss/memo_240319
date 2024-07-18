@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileManagerService {
 	
 	// 실제 업로드가 된 이미지가 저장될 서버의 경로 - 주의: 마지막에 "/" 넣기
-	public static final String FILE_UPLOAD_PATH = "D:\\배진하\\6_spring_project\\memo\\memo_workspace\\images"; // 학원
-//	public static final String FILE_UPLOAD_PATH = "끝에 슬래쉬 넣기"; // 집
+//	public static final String FILE_UPLOAD_PATH = "D:\\배진하\\6_spring_project\\memo\\memo_workspace\\images/"; // 학원
+	public static final String FILE_UPLOAD_PATH = "C:\\github\\Marondal\\6_project\\memo\\memo_workspace\\images/"; // 집
 	
 	// input: MultipartFile, userLoginId
 	// output: String(이미지 경로)
@@ -24,7 +24,7 @@ public class FileManagerService {
 		String directoryName = loginId + "_" + System.currentTimeMillis();
 
 		// 기본 디렉토리 + 파일 디렉토리, D:\\배진하\\6_spring_project\\memo\\memo_workspace\\images/aaaa_1702802640514/sun.png
-		String filePath = FILE_UPLOAD_PATH + "/" + directoryName + "/";
+		String filePath = FILE_UPLOAD_PATH + directoryName + "/";
 		
 		// ^^ 여기까진 디렉토리를 String으로만 생성한것
 		// vv String directoryName으로 실제 디렉토리 생성
