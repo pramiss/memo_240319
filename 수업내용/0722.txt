@@ -1,0 +1,30 @@
+댓글 목록
+- (현재) 모든 댓글을 가져온 후 일치하는 글에 댓글을 뿌림 -> 댓글을 전부 가져와야하므로 성능적으로 좋지 않음
+- (개선) Card 단위로 글과 댓글, 좋아요를 뿌림 -> 기존 DB에 없는 Card 도메인을 생성 -> <CardView>
+
+<TimelineBO>
+TimelineController -> TimelineBO -> PostBO
+                                           -> UserBO
+                                           -> CommentBO -> UserBO
+                                           -> LikeBO
+                                          (직접 다른 repository, mapper로 접근 X)
+                                          (다른 BO를 통해서 접근한다)
+
+* 상호참조(순환참조)불가
+PostBO, CommentBO, LikeBO 가 TimelineBO를 부르면 안됨
+BO 사이에 참조를 할때는 분명한 계층 관계가 있어야함
+TimelineBO가 View에 가깝고, 다른 BO가 DB에 가깝다.
+(계층이 더 세분화 될 수도 있음)
+
+* 프로젝트
+-> 쇼핑몰이 충분히 난이도 있음.
+
+* JOIN을 안 하는 이유
+DB를 간결하게 유지하기 위해
+-> 캐싱이 적어지고 개발이 쉬워짐. BO만 확인하면 됨.
+
+---------------------------------------------------------------------------------------------------
+List<PostEntity> => 반복문 => List<CardView>
+List<Comment> => 반복문 => List<CommentView>
+-> 이 과정은 BO에서 일어남
+-> Mapper(or Repostory)는 이 과정을 모름
