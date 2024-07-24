@@ -14,14 +14,22 @@ public interface PostMapper {
 	
 	// 글 목록
 	public List<Post> selectPostListByUserId(int userId);
+	// 글 상세
+	public Post selectPostByIdAndUserId(
+			@Param("userId") int userId,
+			@Param("postId") int postId);
 	// 글 추가
 	public void insertPost(
 			@Param("userId") int userId,
 			@Param("subject") String subject,
 			@Param("content") String content,
 			@Param("imagePath") String imagePath);
-	// 글상세
-	public Post selectPostByIdAndUserId(
-			@Param("userId") int userId,
-			@Param("postId") int postId);
+	// 글 수정
+	public void updatePostByPostId(
+			@Param("postId") int postId,
+			@Param("subject") String subject,
+			@Param("content") String content,
+			@Param("imagePath") String imagePath);
+	
+	
 }

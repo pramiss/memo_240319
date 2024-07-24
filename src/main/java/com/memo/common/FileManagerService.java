@@ -9,6 +9,9 @@ import java.nio.file.Paths;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class FileManagerService {
 	
@@ -16,6 +19,12 @@ public class FileManagerService {
 	public static final String FILE_UPLOAD_PATH = "D:\\배진하\\6_spring_project\\memo\\memo_workspace\\images/"; // 학원
 //	public static final String FILE_UPLOAD_PATH = "C:\\github\\Marondal\\6_project\\memo\\memo_workspace\\images/"; // 집
 	
+	/**
+	 * 이미지 파일 추가
+	 * @param file
+	 * @param loginId
+	 * @return
+	 */
 	// input: MultipartFile, userLoginId
 	// output: String(이미지 경로)
 	public String uploadFile(MultipartFile file, String loginId) {
@@ -61,5 +70,42 @@ public class FileManagerService {
 		// /images/aaaa_1721207982638/sun.png <= DB에 저장되는 경로
 		// 하지만 아직 매핑이 안되있어서 해당 경로에 접속해도 이미지가 안나옴 (http://localhost/images/aaaa_1721207982638/sun.png) 
 		return "/images/" + directoryName + "/" + file.getOriginalFilename();
-	}
+	} //-- 이미지 파일 추가
+	
+	// 이미지 파일 삭제
+	// input:이미지 경로(path), output:X
+	public void deleteFile(String imagePath) {
+		// DB경로 -> 실제 경로 변환
+		
+		// imagePath : /images/aaaa_1721209555420/castle.jpg
+		// 실제경로 : D:\배진하\6_spring_project\memo\memo_workspace\images\aaaa_1721209555420
+
+		// FILE_UPLOAD_PATH + imagePath => "D:\\배진하\\6_spring_project\\memo\\memo_workspace\\images//images/aaaa_1721209555420/castle.jpg";
+		// 주소에 겹치는 /images/를 지운다.
+		
+		Path path = Paths.get(FILE_UPLOAD_PATH + imagePath.replace("/images/", ""));
+		
+		
+		// 이미지 파일 삭제. 삭제할 이미지가 존재하는가?
+		if (Files.exists(path)) {
+			// 이미지 삭제
+			try {
+				Files.delete(path);
+			} catch (IOException e) {
+				log.info("[FileManagerServide 파일삭제] 이미지 삭제 실패. path:{}", path.toString());
+				return;
+			}
+		}
+		
+		// 폴더(디렉토리) 삭제
+		path = path.getParent(); // getParent() : 상위디렉토리로 이동
+		if (Files.exists(path)) {
+			try {
+				Files.delete(path);
+			} catch (IOException e) {
+				log.info("[FileManagerServide 파일삭제] 디렉토리 삭제 실패. path:{}", path.toString());
+			}
+		}
+		
+	} //-- 이미지 파일 삭제
 }
