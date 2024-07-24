@@ -27,7 +27,7 @@
 		ORDER BY `id` DESC
 	</select>
 
-	<select id="selectPostByIdAndUserId" parameterType="map" resultType="com.memo.post.domain.Post">
+	<select id="selectPostByPostIdOrUserId" parameterType="map" resultType="com.memo.post.domain.Post">
 		SELECT
 			`id`
 			, `userId`
@@ -40,7 +40,9 @@
 			`post`
 		WHERE
 			`id` = #{postId}
+			<if test="userId != null">
 			AND `userId` = #{userId}
+			</if>
 	</select>
 
 
@@ -78,4 +80,11 @@
 		WHERE
 			`id` = #{postId}
 	</update>
+	
+	<delete id="deletePostByPostId" parameterType="int">
+		DELETE FROM
+			`post`
+		WHERE
+			`id` = #{postId}
+	</delete>
 </mapper>

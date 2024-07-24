@@ -36,7 +36,7 @@ public class PostBO {
 	// input: userId, postId
 	// output: Post/null
 	public Post getPostByIdAndUserId(int userId, int postId) {
-		return postMapper.selectPostByIdAndUserId(userId, postId);
+		return postMapper.selectPostByPostIdOrUserId(postId, userId);
 	}
 	
 	// 글저장
@@ -63,7 +63,7 @@ public class PostBO {
 			MultipartFile file, int userId, String userLoginId) {
 		
 		// 기존글 가져온다.(1. 이미지 교체 시 삭제 위해, 2. (관습적)업데이트 대상이 있는지 확인)
-		Post post = postMapper.selectPostByIdAndUserId(userId, postId);
+		Post post = postMapper.selectPostByPostIdOrUserId(postId, userId);
 		// System.out.println(); -> 웹에선 사용금지!!
 		if (post == null) {
 			log.warn("[글 수정] post is null. userId:{}, postId:{}", userId, postId);
@@ -91,4 +91,23 @@ public class PostBO {
 		postMapper.updatePostByPostId(postId, subject, content, imagePath);
 		
 	} //-- 글수정
+	
+	// 글삭제
+	// input: postId, output: void
+	public void deletePostByPostId(int postId) {
+		// 삭제할 post 조회
+		Post post = postMapper.selectPostByPostIdOrUserId(postId, null);
+		if (post == null) {
+			log.warn("[글 삭제] post is null. postId:{}", postId);
+			return;
+		}
+		
+		// post에 이미지가 있는지 확인 -> 있으면 삭제 아님 말고.
+		if (post.getImagePath() != null) {
+			fileManagerService.deleteFile(post.getImagePath());
+		}
+		
+		// 해당 글 삭제
+		postMapper.deletePostByPostId(postId);
+	}
 }

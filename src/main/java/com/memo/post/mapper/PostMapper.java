@@ -12,12 +12,12 @@ import com.memo.post.domain.Post;
 public interface PostMapper {
 	public List<Map<String, Object>> selectPostListTest();
 	
-	// 글 목록
+	// 글 리스트 가져오기
 	public List<Post> selectPostListByUserId(int userId);
-	// 글 상세
-	public Post selectPostByIdAndUserId(
-			@Param("userId") int userId,
-			@Param("postId") int postId);
+	// 글 1개 가져오기
+	public Post selectPostByPostIdOrUserId(
+			@Param("postId") int postId,
+			@Param("userId") Integer userId);
 	// 글 추가
 	public void insertPost(
 			@Param("userId") int userId,
@@ -30,6 +30,7 @@ public interface PostMapper {
 			@Param("subject") String subject,
 			@Param("content") String content,
 			@Param("imagePath") String imagePath);
-	
+	// 글삭제
+	public void deletePostByPostId(int postId);
 	
 }
