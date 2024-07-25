@@ -95,7 +95,7 @@ public class FileManagerService {
 			try {
 				Files.delete(path);
 			} catch (IOException e) {
-				log.info("[FileManagerServide 파일삭제] 이미지 삭제 실패. path:{}", path.toString());
+				log.info("[FileManagerService 파일삭제] 이미지 삭제 실패. path:{}", path.toString());
 				return;
 			}
 		}
