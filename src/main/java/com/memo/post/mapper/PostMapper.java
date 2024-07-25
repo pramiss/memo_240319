@@ -15,9 +15,9 @@ public interface PostMapper {
 	// 글 리스트 가져오기
 	public List<Post> selectPostListByUserId(int userId);
 	// 글 1개 가져오기
-	public Post selectPostByPostIdOrUserId(
+	public Post selectPostByPostIdAndUserId(
 			@Param("postId") int postId,
-			@Param("userId") Integer userId);
+			@Param("userId") int userId);
 	// 글 추가
 	public void insertPost(
 			@Param("userId") int userId,
@@ -30,7 +30,7 @@ public interface PostMapper {
 			@Param("subject") String subject,
 			@Param("content") String content,
 			@Param("imagePath") String imagePath);
-	// 글삭제
-	public void deletePostByPostId(int postId);
+	// 글 삭제
+	public int deletePostByPostId(int postId);
 	
 }

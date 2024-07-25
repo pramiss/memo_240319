@@ -107,15 +107,16 @@
 					, type:"delete"
 					, data:{"postId":postId}
 					, success:function(data) {
-						if (data.code == 200) {
+						if (data.result == "성공") {
 							alert("삭제되었습니다.");
 							location.href = "/post/post-list-view";						
+						} else {
+							alert(data.error_message);
 						}
 					}
 					, error:function(e) {
 						alert("AJAX ERROR : 글 삭제 실패");
 					}
-					
 				}); //-- ajax 요청
 			}); //-- 글 삭제 버튼
 			

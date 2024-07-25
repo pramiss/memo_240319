@@ -85,11 +85,20 @@ public class PostRestController {
 		return result;
 	}
 	
+	/**
+	 * 글 삭제 API
+	 * @param postId
+	 * @return
+	 */
 	@DeleteMapping("/delete")
 	public Map<String, Object> delete(
-			@RequestParam("postId") int postId) {
+			@RequestParam("postId") int postId,
+			HttpSession session) {
+		
+		int userId = (int)session.getAttribute("userId");
+		
 		// DB delete
-		postBO.deletePostByPostId(postId);
+		postBO.deletePostByPostId(postId, userId);
 		
 		Map<String, Object> result = new HashMap<>();
 		result.put("code", 200);

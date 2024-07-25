@@ -3,10 +3,8 @@
 - (개선) Card 단위로 글과 댓글, 좋아요를 뿌림 -> 기존 DB에 없는 Card 도메인을 생성 -> <CardView>
 
 <TimelineBO>
-TimelineController -> TimelineBO -> PostBO
-                                           -> UserBO
-                                           -> CommentBO -> UserBO
-                                           -> LikeBO
+TimelineController -> TimelineBO -> PostBO -> CommentBO -> UserBO
+                                                         -> LikeBO
                                           (직접 다른 repository, mapper로 접근 X)
                                           (다른 BO를 통해서 접근한다)
 
