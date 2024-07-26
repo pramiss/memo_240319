@@ -1,0 +1,55 @@
+- - - - - - - - - - - <페이징> - - - - - - - - - - -
+클라이언트에서 페이징 계산해서 서버에 보내주기
+vs
+서버에서 페이징 계산하기
+=> 서버에서 페이징하는 것이 좋음
+=> iOS, 안드로이드, Web 등 각각 클라이언트에서 따로 구현되어야함
+=> 서버에서 계산하고 클라이언트에서는 바이패스로 출력
+클라이언트 - prevId or nextId -> 서버 - List<post>, prevId, nextId -> 클라이언트 출력
+* 클라 -> 서버의 prevId, nextId는 서버에서 받은 그대로.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+10 9 8 | 7 6 5 | 4 3 2 | 1
+       <이전  다음>
+
+1. 이전 Btn : 7을 request 파라미터로
+2. 다음 Btn : 5을 request 파라미터로
+3. 그냥(파라미터 없음)
+
+XML에서 숫자를 넣을때
+-> #{limit} : '10' 과 같이 따옴표를 붙여줌
+-> ${limit} : 10과 같이 따옴표 없이 넣어줌
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+@Component
+Page.java
+// field
+private static final int POST_MAX_SIZE;
+private int ablePage;
+private int currentPage; // 가능범위: 0 ~ ablePage
+// method
+public void setAblePage() {
+  ablePage = postBO.getPostCount() / POST_MAX_SIZE;
+}
+public boolean isNextAble() { if(currentPage < ablePage) return true else false }
+public boolean isPrevAble() { if(currentPage > 0) return true else false }
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+- - - - - - - - - - - <페이지 검사> - - - - - - - - - - -
+Servlet => Filter로 구현
+Spring => Interceptor로 구현
+com.memo.intercepter 패키지를 만듬 => 일반적으로 실무에선 3개의 인터셉터 클래스를 만든다.
+1. PermissionInterceptor (권한확인)
+
+//--> Interceptor 추가 후에는 페이지 동작확인 여러번 해보기. (순환페이지 가능성 높음)
+//----> F12 Network 탭에서 확인가능
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+다음주부터 개인 프로젝트
+질문 많이 하기
+
+외부API(공공API, 오픈API), 라이브러리 사용
+-- 외부API - 카카오 로그인 -> 많으니까 찾아보기
+-- 라이브러리 - 달력(풀캘린더), 써머노트
+
+
+
+
+
+
